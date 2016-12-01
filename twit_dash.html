@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Deep-Insights.js | Highest Mountains</title>
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+    <meta name=viewport content="width=device-width initial-scale=1">
+    <link rel="stylesheet" href="http://libs.cartocdn.com/di.js/v0/themes/css/deep-insights.css" />
+<script src=" http://libs.cartocdn.com/di.js/v0/deep-insights.uncompressed.js"></script>
+    <style type="text/css">
+      html, body {
+        position:relative;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="dashboard"></div>
+​
+    <script>
+      window.onload = function() {
+        
+        // set vizJson
+        var vizJSON = "https://danylaksono.carto.com/api/v3/viz/88483614-b759-11e6-82c5-0e233c30368f/viz.json";
+
+        // create dashboard
+        cartodb.deepInsights.createDashboard('#dashboard', vizJSON, {
+          no_cdn: false,
+          cartodb_logo: false
+        },function(err,dashboard){
+            // get map object
+            var map = dashboard.getMap();
+
+            // set widgets parameters
+            var histo = {
+                "type": "histogram",
+                "title": "Waktu",
+                "column": "jam",
+                "bins": 10
+            };
+            var avg = {
+                "type": "formula",
+                "title": "Jam Rerata",
+                "column": "jam",
+                "operation": "avg"
+            };
+            /*
+            var keyword = {
+                "type": "category",
+                "title": "Keyword",
+                "column": "keyword"
+            };
+            */
+
+          // add a widgets to the layer
+          dashboard.createFormulaWidget(avg,map.getLayer(1));
+          dashboard.createHistogramWidget(histo,map.getLayer(1));
+          //dashboard.createHistogramWidget(keyword,map.getLayer(1));
+          
+        });
+      }
+    </script>
+  </body>
+</html>
